@@ -1,5 +1,5 @@
-const notes={
-  mk:[
+const notes = {
+  mk: [
     "তোমার হাসিটা আমার সবচেয়ে প্রিয় দৃশ্য। 💙",
     "তোমার পাশে থাকলেই ordinary মুহূর্তগুলো special হয়ে যায়। ❤️",
     "এই ছবিটা দেখলেই মনে হয়—আমাদের গল্পটা সত্যিই সুন্দর। 🌸",
@@ -9,7 +9,8 @@ const notes={
     "আমার favourite place? তোমার পাশে। সবসময়। 💙",
     "একটা ছবি, হাজারটা অনুভূতি—আর সবকিছুর মাঝখানে তুমি। ❤️"
   ],
-  honeymoon:[
+
+  honeymoon: [
     "কোনো destination না, আমার favourite journey হলো তোমার সাথে। 🌙",
     "তোমার হাতটা ধরে দূরে কোথাও হারিয়ে যেতে ইচ্ছে করে। 💕",
     "আমাদের দুজনের জন্য পৃথিবীর যেকোনো জায়গাই beautiful। 🌸",
@@ -19,7 +20,8 @@ const notes={
     "ভ্রমণ শেষ হয়ে যায়, কিন্তু তোমার সাথে তৈরি হওয়া memory থেকে যায়। 🌷",
     "যত দূরেই যাই, আমার favourite place থাকবে তোমার কাছেই। 💙"
   ],
-  memories:[
+
+  memories: [
     "সময় চলে যায়, কিন্তু তোমাকে নিয়ে আমার মায়াটা থেকে যায়। 🌿",
     "এই ছোট্ট মুহূর্তগুলোই একদিন সবচেয়ে বেশি miss করব। ❤️",
     "কিছু memory delete করা যায় না—কারণ সেগুলো হৃদয়ে থাকে। 💙",
@@ -28,9 +30,10 @@ const notes={
     "আমাদের গল্পের সবচেয়ে সুন্দর chapterগুলো এমনই ছোট ছোট। 🦋",
     "সময় বদলালেও এই অনুভূতিটা যেন একই থাকে। 🌷",
     "তোমার সাথে আরও এমন হাজারটা memory চাই। ❤️",
-   "তোমার হাতটা, আমার বাহুতে—ভালোবাসা পূর্ণ। ❤️"
+    "তোমার হাতটা, আমার বাহুতে—ভালোবাসা পূর্ণ। ❤️"
   ],
-  wedding:[
+
+  wedding: [
     "তোমার দিকে তাকিয়ে মনে হয়েছিল—এই মানুষটার হাতটা ধরে রাখতে চাই। ❤️",
     "একটা সুন্দর chapter থেকে আমাদের forever story শুরু হয়েছিল। 💙",
     "তোমার পাশে থাকার promise-টা আমার সবচেয়ে প্রিয় promise। 🌸",
@@ -42,21 +45,60 @@ const notes={
   ]
 };
 
-const key=document.body.dataset.key||"mk";
-document.querySelectorAll(".card").forEach((card,i)=>{
-  card.onclick=()=>{
-    document.querySelector(".surprise").classList.add("open");
-    document.querySelector(".message").textContent=(notes[key]||notes.mk)[i] || "তুমি আমার সবচেয়ে সুন্দর surprise. 💙❤️";
-    for(let j=0;j<30;j++){
-      const p=document.createElement("span");
-      p.className="petal";
-      p.textContent=["🌸","🌷","♡","✦","🦋"][Math.floor(Math.random()*5)];
-      p.style.left=45+Math.random()*10+"vw";
-      p.style.setProperty("--x",(Math.random()*70-35)+"vw");
-      p.style.animationDelay=Math.random()*.5+"s";
-      document.body.appendChild(p);
-      setTimeout(()=>p.remove(),3500);
-    }
-  };
+document.addEventListener("DOMContentLoaded", () => {
+
+  const key = document.body.dataset.key || "mk";
+  const cards = document.querySelectorAll(".card");
+  const surprise = document.querySelector(".surprise");
+  const message = document.querySelector(".message");
+  const closeButton = document.querySelector(".x");
+
+  cards.forEach((card, i) => {
+
+    card.addEventListener("click", () => {
+
+      if (!surprise || !message) return;
+
+      const currentNotes = notes[key] || notes.mk;
+
+      message.textContent =
+        currentNotes[i] || "তুমি আমার সবচেয়ে সুন্দর surprise. 💙❤️";
+
+      surprise.classList.add("open");
+
+      for (let j = 0; j < 30; j++) {
+
+        const p = document.createElement("span");
+
+        p.className = "petal";
+        p.textContent =
+          ["🌸", "🌷", "♡", "✦", "🦋"][
+            Math.floor(Math.random() * 5)
+          ];
+
+        p.style.left = 45 + Math.random() * 10 + "vw";
+        p.style.setProperty(
+          "--x",
+          (Math.random() * 70 - 35) + "vw"
+        );
+
+        p.style.animationDelay =
+          Math.random() * 0.5 + "s";
+
+        document.body.appendChild(p);
+
+        setTimeout(() => {
+          p.remove();
+        }, 3500);
+      }
+    });
+
+  });
+
+  if (closeButton && surprise) {
+    closeButton.addEventListener("click", () => {
+      surprise.classList.remove("open");
+    });
+  }
+
 });
-document.querySelector(".x").onclick=()=>document.querySelector(".surprise").classList.remove("open");
